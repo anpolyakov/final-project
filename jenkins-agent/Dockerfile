@@ -1,6 +1,6 @@
 FROM ubuntu:20.04
 
-RUN apt update; apt install -y sudo terraform tzdata; dpkg-reconfigure -f noninteractive tzdata && \ 
+RUN apt update; apt install -y sudo curl tzdata; dpkg-reconfigure -f noninteractive tzdata && \ 
     apt install -y git openssh-server && \
     sed -i 's|session    required     pam_loginuid.so|session    optional     pam_loginuid.so|g' /etc/pam.d/sshd && \
     mkdir -p /var/run/sshd && \
@@ -10,6 +10,11 @@ RUN apt update; apt install -y sudo terraform tzdata; dpkg-reconfigure -f nonint
 
 # Add passwordless authentication
 RUN echo "jenkins ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+# Install terraform
+RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add - && \
+    apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main" && \
+    apt update -y && apt install -y terraform    
 
 # Expose SSH port
 EXPOSE 22
