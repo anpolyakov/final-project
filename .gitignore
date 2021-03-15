@@ -1,10 +1,14 @@
 task
-.terraform/**
+.DS_Store
+
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+*.tfvars
+
 credentials.json
-terraform.tfstate
-terraform.tfvars
-terraform.tfstate.backup
-.terraform.lock.hcl
-terraform*
-instance.tf
-variables.tf
+.aws/**
