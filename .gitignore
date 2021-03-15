@@ -1,0 +1,10 @@
+task
+.terraform/**
+credentials.json
+terraform.tfstate
+terraform.tfvars
+terraform.tfstate.backup
+.terraform.lock.hcl
+terraform*
+instance.tf
+variables.tf
