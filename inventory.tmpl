@@ -1,5 +1,10 @@
+[all:vars]
+ansible_ssh_private_key_file=/Users/work/.ssh/devops_aws.pem
+ansible_user=ubuntu
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
 [maven]
-${maven-dns} ansible_host=${maven-ip} ansible_ssh_private_key_file=/Users/work/.ssh/devops_aws.pem ansible_user=ubuntu ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+${maven-dns} ansible_host=${maven-ip} 
 
 [tomcat]
-${tomcat-dns} ansible_host=${tomcat-ip} ansible_ssh_private_key_file="/Users/work/.ssh/devops_aws.pem" ansible_user=ubuntu ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+${tomcat-dns} ansible_host=${tomcat-ip}
