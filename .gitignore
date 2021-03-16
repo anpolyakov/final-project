@@ -9,7 +9,5 @@ task
 *.tfstate.*
 .terraform.lock.hcl
 
-*.tfvars
-
 credentials.json
 .aws/**
