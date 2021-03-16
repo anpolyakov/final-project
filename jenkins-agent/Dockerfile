@@ -1,6 +1,6 @@
 FROM ubuntu:20.04
 
-RUN apt update; apt install -y gnupg gnupg2 gnupg1 software-properties-common sudo curl tzdata; dpkg-reconfigure -f noninteractive tzdata && \ 
+RUN apt update; apt install -y gnupg gnupg2 gnupg1 ansible software-properties-common sudo curl tzdata; dpkg-reconfigure -f noninteractive tzdata && \ 
     apt install -y git openssh-server && \
     sed -i 's|session    required     pam_loginuid.so|session    optional     pam_loginuid.so|g' /etc/pam.d/sshd && \
     mkdir -p /var/run/sshd && \
