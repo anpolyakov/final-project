@@ -1,5 +1,0 @@
-[maven]
-ec2-52-29-73-78.eu-central-1.compute.amazonaws.com ansible_host=52.29.73.78 ansible_ssh_private_key_file=/Users/work/.ssh/devops_aws.pem ansible_user=ubuntu ansible_ssh_common_args='-o StrictHostKeyChecking=no'
-
-[tomcat]
-ec2-3-64-56-73.eu-central-1.compute.amazonaws.com ansible_host=3.64.56.73 ansible_ssh_private_key_file="/Users/work/.ssh/devops_aws.pem" ansible_user=ubuntu ansible_ssh_common_args='-o StrictHostKeyChecking=no'
