@@ -19,6 +19,7 @@ resource "aws_instance" "maven" {
   tags = {
     "Name" = "Maven"
   }
+}
 
 
 resource "aws_instance" "tomcat" {
@@ -28,6 +29,4 @@ resource "aws_instance" "tomcat" {
   tags = {
     "Name" = "Tomcat"
   }
-
-}
 }
