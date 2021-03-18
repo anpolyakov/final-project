@@ -10,4 +10,4 @@ task
 .terraform.lock.hcl
 
 credentials.json
-.aws/**
+**/.aws/**
