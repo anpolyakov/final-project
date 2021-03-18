@@ -1,6 +1,7 @@
 ---
 - name: Setup Maven Environment
   gather_facts: False
+  become: yes
   hosts: maven
 
   tasks:
@@ -18,6 +19,7 @@
 
 - name: Setup Tomcat Environment
   gather_facts: False
+  become: yes
   hosts: tomcat
 
   tasks:
