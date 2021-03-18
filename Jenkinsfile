@@ -28,9 +28,15 @@ pipeline {
                 sh 'terraform apply --auto-approve'
             }
         }
-        stage('Terraform destroy') {
+        stage('Ansible ping') {
             steps {
-                sh 'terraform destroy --auto-approve'
+                sh 'sleep 1m'
+                    ansiblePlaybook( 
+                    playbook: 'provisoning.yml',
+                    inventory: 'inventory',
+                    credentialsId: 'aws_key',
+                    disableHostKeyChecking: false
+                )
             }
         }
     }
