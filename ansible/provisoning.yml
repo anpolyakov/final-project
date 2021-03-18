@@ -1,9 +1,34 @@
 ---
-- name: Ping Hosts
+- name: Setup Maven Environment
   gather_facts: False
-  hosts: all
+  hosts: maven
 
   tasks:
 
-  - name: Ping hosts
-    ping:
+  - name: Ensure docker is present
+    apt:
+      name: docker.io
+      update_cache: yes
+      state: present
+
+  - name: Ensure docker is started
+    service:
+      name: docker
+      state: started
+
+- name: Setup Tomcat Environment
+  gather_facts: False
+  hosts: tomcat
+
+  tasks:
+  
+  - name: Ensure docker is present
+    apt:
+      name: docker.io
+      state: present
+
+  - name: Ensure docker is started
+    service:
+      name: docker
+      update_cache: yes
+      state: started
