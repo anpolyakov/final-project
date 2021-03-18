@@ -37,7 +37,7 @@ pipeline {
                 sh 'sleep 1m'
                     ansiblePlaybook( 
                     playbook: 'ansible/provisoning.yml',
-                    inventory: 'ansible/inventory',
+                    inventory: 'terraform/inventory',
                     credentialsId: 'aws_key',
                     disableHostKeyChecking: false
                 )
