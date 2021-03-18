@@ -8,6 +8,7 @@ task
 *.tfstate
 *.tfstate.*
 .terraform.lock.hcl
+*.debug
 
 credentials.json
 **/.aws/**
