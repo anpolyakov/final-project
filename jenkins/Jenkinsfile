@@ -2,7 +2,7 @@ pipeline {
     agent {
         dockerfile {
             filename 'Dockerfile'
-            dir 'jenkins-agent'
+            dir 'docker/jenkins-agent'
         }
     }
     
@@ -19,26 +19,35 @@ pipeline {
         }
         stage('Terraform init') {
             steps {
-                sh 'terraform init'
+                dir("terraform") {
+                    sh 'terraform init'
+                }
             }
         }
         stage('Terraform plan') {
             steps {
-                sh 'terraform plan -input=false -out tfplan'
-                sh 'terraform show -no-color tfplan > tfplan.txt'
-                sh 'terraform apply --auto-approve'
+                dir("terraform") {
+                    sh 'terraform plan -input=false -out tfplan'
+                    sh 'terraform show -no-color tfplan > tfplan.txt'
+                    sh 'terraform apply --auto-approve'
+                }
             }
         }
         stage('Ansible ping') {
             steps {
                 sh 'sleep 1m'
                     ansiblePlaybook( 
-                    playbook: 'provisoning.yml',
-                    inventory: 'inventory',
+                    playbook: 'ansible/provisoning.yml',
+                    inventory: 'ansible/inventory',
                     credentialsId: 'aws_key',
                     disableHostKeyChecking: false
                 )
             }
+        }
+    }
+    post { 
+        always { 
+            cleanWs()
         }
     }
 }
