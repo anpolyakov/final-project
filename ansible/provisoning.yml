@@ -27,6 +27,7 @@
   - name: Ensure docker is present
     apt:
       name: docker.io
+      update_cache: yes
       state: present
 
   - name: Ensure docker is started
