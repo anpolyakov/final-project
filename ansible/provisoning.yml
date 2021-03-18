@@ -33,5 +33,4 @@
   - name: Ensure docker is started
     service:
       name: docker
-      update_cache: yes
       state: started
