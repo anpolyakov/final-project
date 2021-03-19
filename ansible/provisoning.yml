@@ -63,6 +63,7 @@
     apt:
       name: nmap
       update_cache: yes
+    become_user: root
     delegate_to: maven-container
       
 
