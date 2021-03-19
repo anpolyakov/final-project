@@ -53,10 +53,8 @@
     changed_when: false
 
   - name: Run commands in maven container
-    become: yes
-    become_user: root
-    delegate_to: maven-container
-    command: apt update -y; apt install -y git
+    shell: docker exec maven-container bash -c "hostname"
+
       
 
 - name: Setup Tomcat Environment
