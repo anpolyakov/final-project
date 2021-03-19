@@ -50,6 +50,7 @@
     add_host:
       name: maven-container
       ansible_connection: docker
+      ansible_docker_extra_args: "-H=tcp://35.159.23.110:4243"
     changed_when: false
 
 - name: Connect to docker-container maven-container
