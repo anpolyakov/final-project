@@ -35,21 +35,21 @@
   - name: Create docker image
     docker_image:
       path: /tmp/final-project/docker/maven
-      name: maven
+      name: maven-image
 
   - name: Create a maven container
     docker_container:
-      name: maven
-      image: maven
+      name: maven-container
+      image: maven-image
     
   - name: Add container to inventory
     add_host:
-      name: maven
+      name: maven-container
       ansible_connection: docker
     changed_when: false
 
   - name: Run commands in maven container
-    delegate_to: maven
+    delegate_to: maven-container
     raw: bash
 
 - name: Setup Tomcat Environment
