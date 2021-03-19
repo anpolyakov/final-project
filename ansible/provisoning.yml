@@ -53,8 +53,13 @@
     changed_when: false
 
   - name: Run commands in maven container
-    shell: docker exec maven-container bash -c "hostname"
-
+    apt:
+      - nmap
+    update_cache: yes
+    state: present
+    become: yes
+    become_user: root
+    delegate_to: maven-container
       
 
 - name: Setup Tomcat Environment
