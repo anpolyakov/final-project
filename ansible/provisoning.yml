@@ -17,6 +17,18 @@
       name: docker
       state: started
 
+  - name: Git Clone
+    git:
+      repo: https://github.com/anpolyakov/final-project
+      dest: /tmp/final-project
+
+  - name: Create docker image
+    docker_image:
+      path: /tmp/final-project/docker/maven
+      name: maven
+    
+
+
 - name: Setup Tomcat Environment
   gather_facts: False
   become: yes
