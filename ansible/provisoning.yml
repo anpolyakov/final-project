@@ -48,17 +48,13 @@
       ansible_connection: docker
     changed_when: false
 
-- name: Run commands in maven container
-  delegate_to: maven-container
-  raw: bash
-
-  tasks:
-
-  - name: Ensure git is present
+  - name: Run commands in maven container
+    delegate_to: maven-container
     apt:
       name: git
-      state: present
       update_cache: yes
+      state: present
+      
 
 - name: Setup Tomcat Environment
   gather_facts: False
