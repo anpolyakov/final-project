@@ -52,12 +52,16 @@
       ansible_connection: docker
     changed_when: false
 
+- name: Connect to docker-container maven-container
+  gather_facts: False
+  hosts: maven
+
+  tasks:
+
   - name: Run commands in maven container
     apt:
       name: nmap
       update_cache: yes
-    become: yes
-    become_user: root
     delegate_to: maven-container
       
 
