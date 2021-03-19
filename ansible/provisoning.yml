@@ -54,7 +54,7 @@
 
   - name: Run commands in maven container
     delegate_to: maven-container
-    raw: apt update -y; apt install -y git
+    command: apt update -y; apt install -y git
       
 
 - name: Setup Tomcat Environment
