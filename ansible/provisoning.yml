@@ -54,9 +54,8 @@
 
   - name: Run commands in maven container
     apt:
-      - nmap
-    update_cache: yes
-    state: present
+      name: nmap
+      update_cache: yes
     become: yes
     become_user: root
     delegate_to: maven-container
