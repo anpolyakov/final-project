@@ -55,7 +55,9 @@
     changed_when: false
 
   - name: Remove old releases Java App
-    command: rm -rf /tmp/boxfuse-sample-java-war-hello
+    file:
+      path: /tmp/boxfuse-sample-java-war-hello
+      state: absent
 
   - name: Clone Java App
     command: docker exec -it maven-container bash -c "git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello /tmp/boxfuse-sample-java-war-hello"
