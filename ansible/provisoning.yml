@@ -54,15 +54,11 @@
       ansible_docker_extra_args: "-H=tcp://35.159.23.110:4243"
     changed_when: false
 
-- name: Connect to docker-container maven-container
-  gather_facts: False
-  become: yes
-  hosts: maven
-
-  tasks:
-
-  - name: Run commands in maven container
+  - name: Clone Java App
     command: docker exec -it maven-container bash -c "git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello /tmp/boxfuse-sample-java-war-hello"
+
+  - name: Build Java App
+    command: docker exec -it maven-container bash -c "mvn package -f /tmp/boxfuse-sample-java-war-hello/pom.xml" 
       
 
 - name: Setup Tomcat Environment
