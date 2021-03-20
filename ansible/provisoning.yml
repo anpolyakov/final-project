@@ -55,6 +55,7 @@
 
 - name: Connect to docker-container maven-container
   gather_facts: False
+  become: yes
   hosts: maven
 
   tasks:
