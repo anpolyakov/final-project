@@ -6,6 +6,9 @@ Below you cas see sample screenshot from Jenkins pipeline results.
 ![final-project_overview](https://user-images.githubusercontent.com/43615585/111874332-d587fb80-89a5-11eb-9e4a-7d9606238934.png)
 
 ### Credentials
+
+To run this project you should create following variables in Jenkins
+
 ![credentials_jenkins](https://user-images.githubusercontent.com/43615585/111871585-0a8f5080-899c-11eb-8e5e-8b803ad8af08.png)
 
 ### Project structure
