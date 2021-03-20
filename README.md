@@ -11,6 +11,7 @@ Below you cas see sample screenshot from Jenkins pipeline results.
 ### Project structure
 
 There are you can see the structure of project, with short description.
+
     .
     ├── ansible
     │   ├── provisoning.yml          # Provisoning ansible playbook
