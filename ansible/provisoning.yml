@@ -79,7 +79,17 @@
       bucket: final-project-bucket
       region: eu-central-1
       mode: create
-      permission: public-read
+      permission: private
+
+  - name: Copy artefact to bucket
+    aws_s3:
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_secret_key }}"
+      bucket: final-project-bucket
+      region: eu-central-1
+      object: hello-1.0.war
+      src: /tmp/boxfuse-sample-java-war-hello/target/hello-1.0.war
+      mode: put
 
 - name: Setup Tomcat Environment
   gather_facts: False
