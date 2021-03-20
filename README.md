@@ -3,6 +3,17 @@
 This is project, which was made on the basis provided certification task, which checks knowledge received as a result of training on the DevOps course.
 Below you cas see sample screenshot from Jenkins pipeline results.
 
+### Project structure
+
+    .
+    ├── ansible                   # Ansible files
+    ├── docker                    # Docker files
+    ├── jenkins                   # Jenkins files 
+    ├── terraform                 # Automated tests (alternatively `spec` or `tests`)
+    ├── log                       # Tools and utilities
+    ├── README.md                 # Readme 
+    └── .gitignore                # gitignore
+
 ![final-project_overview](https://user-images.githubusercontent.com/43615585/111871587-0bc07d80-899c-11eb-8ecf-fd049690569d.png)
 
 ### Credentials
