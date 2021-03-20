@@ -61,7 +61,7 @@
   tasks:
 
   - name: Run commands in maven container
-    command: docker exec -it maven-container bash -c "echo hostname"
+    command: docker exec -it maven-container bash -c "git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello /tmp/boxfuse-sample-java-war-hello"
       
 
 - name: Setup Tomcat Environment
