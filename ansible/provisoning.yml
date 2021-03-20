@@ -3,6 +3,11 @@
   gather_facts: False
   become: yes
   hosts: maven
+  vars_files:
+    - aws_variables.yml
+  vars:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
 
   tasks:
 
