@@ -23,7 +23,7 @@ pipeline {
                 }
             }
         }
-        stage('Terraform plan') {
+        stage('Terraform plan and apply') {
             steps {
                 dir("terraform") {
                     sh 'terraform plan -input=false -out tfplan'
@@ -32,9 +32,9 @@ pipeline {
                 }
             }
         }
-        stage('Ansible ping') {
+        stage('Ansible provisoning and Deploy Java App') {
             steps {
-                sh 'sleep 1m'
+                sh 'sleep 10s'
                     ansiblePlaybook( 
                     playbook: 'ansible/provisoning.yml',
                     inventory: 'terraform/inventory',

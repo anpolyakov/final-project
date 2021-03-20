@@ -24,10 +24,32 @@ resource "aws_security_group" "allow_ssh" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+
+  }
+  
+}
+
+resource "aws_security_group" "allow_ssh_tomcat" {
+  name = "allow-ssh-tomcat"
+  description = "Allow SSH and Tomcat inbound traffic"
+
   ingress {
-    description = "Docker"
-    from_port   = 4243
-    to_port     = 4243
+    description = "SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Tomcat"
+    from_port   = 8080
+    to_port     = 8080
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -53,12 +75,11 @@ resource "aws_instance" "maven" {
   }
 }
 
-
 resource "aws_instance" "tomcat" {
   ami           = "ami-0767046d1677be5a0"
   instance_type = "t2.micro"
   key_name = "${var.aws_key_name}"
-  security_groups = ["${aws_security_group.allow_ssh.name}"]
+  security_groups = ["${aws_security_group.allow_ssh_tomcat.name}"]
 
   tags = {
     "Name" = "Tomcat"
