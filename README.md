@@ -14,7 +14,7 @@ Below you cas see sample screenshot from Jenkins pipeline results.
     ├── ansible                   # Ansible files
     ├── docker                    # Docker files
     ├── jenkins                   # Jenkins files 
-    ├── terraform                 # Automated tests (alternatively `spec` or `tests`)
+    ├── terraform                 # Terraform files
     ├── log                       # Tools and utilities
     ├── README.md                 # Readme 
     └── .gitignore                # gitignore
