@@ -5,6 +5,10 @@ Below you cas see sample screenshot from Jenkins pipeline results.
 
 ![final-project_overview](https://user-images.githubusercontent.com/43615585/111874332-d587fb80-89a5-11eb-9e4a-7d9606238934.png)
 
+### What was the task?
+
+Write Jenkins pipeline, which launch instances in AWS, build Java application and deploy application on stage. Nessesary to use Terraform code and Ansible. Application have to be published in container.  
+
 ### Credentials
 
 To run this project you should create following variables in Jenkins
