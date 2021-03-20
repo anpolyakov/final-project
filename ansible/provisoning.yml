@@ -63,8 +63,14 @@
     command: docker exec -it maven-container bash -c "git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello /tmp/boxfuse-sample-java-war-hello"
 
   - name: Build Java App
-    command: docker exec -it maven-container bash -c "mvn package -f /tmp/boxfuse-sample-java-war-hello/pom.xml" 
-      
+    command: docker exec -it maven-container bash -c "mvn package -f /tmp/boxfuse-sample-java-war-hello/pom.xml"
+    
+  - name: Create an empty bucket
+    aws_s3:
+      bucket: final-project-bucket
+      region: eu-central-1
+      mode: create
+      permission: public-read
 
 - name: Setup Tomcat Environment
   gather_facts: False
