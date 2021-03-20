@@ -1,7 +1,7 @@
 # Final Project DevOps Course
 
 This is project, which was made on the basis provided certification task, which checks knowledge received as a result of training on the DevOps course.
-Below you cas see sample screenshot from Jenkins pipeline results.
+Below you can see sample screenshot from Jenkins pipeline results.
 
 ![final-project_overview](https://user-images.githubusercontent.com/43615585/111874332-d587fb80-89a5-11eb-9e4a-7d9606238934.png)
 
