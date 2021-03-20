@@ -60,11 +60,7 @@
   tasks:
 
   - name: Run commands in maven container
-    apt:
-      name: nmap
-      update_cache: yes
-    become_user: root
-    delegate_to: maven-container
+    command: docker exec -it maven-container bash -c "echo hostname"
       
 
 - name: Setup Tomcat Environment
