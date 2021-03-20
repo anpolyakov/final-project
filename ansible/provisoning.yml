@@ -26,6 +26,8 @@
     pip:
       name: 
       - docker-py
+      - boto3
+      - botocore
 
   - name: Git Clone
     git:
