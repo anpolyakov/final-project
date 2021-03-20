@@ -27,7 +27,7 @@
       name: python3-pip
       state: present
 
-  - name: Ensure docker-py is present
+  - name: Ensure pip packages is present
     pip:
       name: 
       - docker-py
@@ -114,11 +114,13 @@
       name: python3-pip
       state: present
   
-  - name: Ensure docker-py is present
+  - name: Ensure pip packages is present
     pip:
       name: 
       - docker-py
-  
+      - boto3
+      - botocore
+
   - name: Git Clone
     git:
       repo: https://github.com/anpolyakov/final-project
@@ -127,4 +129,30 @@
   - name: Create docker image
     docker_image:
       path: /tmp/final-project/docker/tomcat
-      name: tomcat
+      name: tomcat-image
+
+  - name: Create a tomcat container
+    docker_container:
+      name: tomcat-container
+      image: tomcat-image
+      detach: yes
+      volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker
+      - /tmp/:/var/lib/tomcat9/webapps/
+
+  - name: Download artefact to tomcat webroot
+    aws_s3:
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_secret_key }}"
+      bucket: final-project-bucket
+      region: eu-central-1
+      object: hello-1.0.war
+      dest: /tmp/hello-1.0.war
+      mode: get
+
+
+
+
+  
+    
