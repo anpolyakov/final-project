@@ -11,10 +11,24 @@ Below you cas see sample screenshot from Jenkins pipeline results.
 ### Project structure
 
     .
-    ├── ansible                   # Ansible files
-    ├── docker                    # Docker files
-    ├── jenkins                   # Jenkins files 
-    ├── terraform                 # Terraform files
-    ├── log                       # Tools and utilities
-    ├── README.md                 # Readme 
-    └── .gitignore                # gitignore
+    ├── ansible
+    │   ├── provisoning.yml          # Provisoning ansible playbook
+    ├── docker                       # Directory for Dockerfiles
+    │   ├── jenkins-agent            # Directory for jenkins-agent Dockerfile
+    │   │   ├── Dockerfile           # Dockerfile to create jenkins-agent for jenkins pipeline
+    │   ├── maven                    # Directory for maven Dockerfile
+    │   │   ├── Dockerfile           # Dockerfile to create maven container
+    │   ├── tomcat                   # Directory for tomcat Dockerfile
+    │   │   ├── Dockerfile           # Dockerfile to create tomcat container   
+    ├── jenkins                      # Directory for Jenkinsfile   
+    │   ├── Jenkinsfile              # Jenkins file with pipeline commands
+    ├── terraform                    # Directory for Terraform
+    │   ├── instances.tf             # File instances.tf describes resources, which will created on AWS: maven, tomcat hosts and etc
+    │   ├── inventory.tmpl           # File inventory.tmpl is used for generating inventory file for Ansible 
+    │   ├── outputs.tf               # File outputs.tf is used to create inventory file for Ansible after terraform resources will created
+    │   ├── terraform.tfvars         # File terraform.tfvars contains necessary variables for Terraform
+    │   ├── variables.tf             # File variables.tf contains variables for Terraform 
+    ├── log                          # Log directory which contains result of example successful pipeline job 
+    │    ├── jenkins-job.log         # File jenkins-job.log contains result of pipeline job 
+    ├── README.md                    # Description of the project
+    └── .gitignore                   # File, which ignored unnecessary
