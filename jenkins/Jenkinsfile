@@ -39,7 +39,8 @@ pipeline {
                     playbook: 'ansible/provisoning.yml',
                     inventory: 'terraform/inventory',
                     credentialsId: 'aws_key',
-                    disableHostKeyChecking: false
+                    disableHostKeyChecking: false,
+                    extras: -e '@aws_variables.yml'
                 )
             }
         }
