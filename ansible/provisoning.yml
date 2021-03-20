@@ -69,6 +69,8 @@
     
   - name: Create an empty bucket
     aws_s3:
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_secret_key }}"
       bucket: final-project-bucket
       region: eu-central-1
       mode: create
