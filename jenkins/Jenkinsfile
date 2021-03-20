@@ -40,8 +40,7 @@ pipeline {
                     inventory: 'terraform/inventory',
                     credentialsId: 'aws_key',
                     disableHostKeyChecking: false,
-                    extras: -e '@aws_variables.yml'
-                )
+                    extras: '-e @aws_variables.yml')
             }
         }
     }
