@@ -139,7 +139,7 @@
       volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/bin/docker:/usr/bin/docker
-      - /tmp/:/var/lib/tomcat9/webapps/
+      - /tmp/:/usr/local/tomcat/webapps
 
   - name: Download artefact to tomcat webroot
     aws_s3:
