@@ -1,0 +1,492 @@
+Started by user Aleksandr Polyakov
+Running in Durability level: MAX_SURVIVABILITY
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/lib/jenkins/workspace/Final Project
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Agent Setup)
+[Pipeline] isUnix
+[Pipeline] readFile
+[Pipeline] sh
++ docker build -t 9d11cac4afbd83e60b8a9dd5660c6c5fbac62341 -f Dockerfile .
+Sending build context to Docker daemon  196.5MB
+
+Step 1/6 : FROM ubuntu:20.04
+ ---> 4dd97cefde62
+Step 2/6 : RUN apt update; apt install -y gnupg gnupg2 gnupg1 ansible software-properties-common sudo curl tzdata; dpkg-reconfigure -f noninteractive tzdata &&     apt install -y git openssh-server &&     sed -i 's|session    required     pam_loginuid.so|session    optional     pam_loginuid.so|g' /etc/pam.d/sshd &&     mkdir -p /var/run/sshd &&     groupadd jenkins -g 120 &&     useradd jenkins -u 113 -g 120 -m -d /var/lib/jenkins; echo "jenkins:jenkins" | chpasswd
+ ---> Using cache
+ ---> bd438a6c1044
+Step 3/6 : RUN echo "jenkins ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+ ---> Using cache
+ ---> ef6d7c7dbdd9
+Step 4/6 : RUN curl -fsSL https://apt.releases.hashicorp.com/gpg > gpg &&     apt-key add gpg &&     apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main" &&     apt update -y && apt install -y terraform
+ ---> Using cache
+ ---> 860d5cae93d1
+Step 5/6 : EXPOSE 22
+ ---> Using cache
+ ---> 606887b65ed9
+Step 6/6 : CMD ["/usr/sbin/sshd", "-D"]
+ ---> Using cache
+ ---> 31693c28129f
+Successfully built 31693c28129f
+Successfully tagged 9d11cac4afbd83e60b8a9dd5660c6c5fbac62341:latest
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] isUnix
+[Pipeline] sh
++ docker inspect -f . 9d11cac4afbd83e60b8a9dd5660c6c5fbac62341
+.
+[Pipeline] withDockerContainer
+Jenkins does not seem to be running inside a container
+$ docker run -t -d -u 113:120 -w "/var/lib/jenkins/workspace/Final Project" -v "/var/lib/jenkins/workspace/Final Project:/var/lib/jenkins/workspace/Final Project:rw,z" -v "/var/lib/jenkins/workspace/Final Project@tmp:/var/lib/jenkins/workspace/Final Project@tmp:rw,z" -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** 9d11cac4afbd83e60b8a9dd5660c6c5fbac62341 cat
+$ docker top 22d9567ed8413667044904aca4004fcc7c947b175cfb4174dc32c4f7318e07f2 -eo pid,comm
+[Pipeline] {
+[Pipeline] withCredentials
+Masking supported pattern matches of $AWS_ACCESS_KEY_ID or $AWS_SECRET_ACCESS_KEY
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Git Pull)
+[Pipeline] git
+The recommended git tool is: NONE
+No credentials specified
+Warning: JENKINS-30600: special launcher org.jenkinsci.plugins.docker.workflow.WithContainerStep$Decorator$1@15a79830; decorates hudson.Launcher$LocalLauncher@1b6074f4 will be ignored (a typical symptom is the Git executable not being run inside a designated container)
+ > git rev-parse --is-inside-work-tree # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/anpolyakov/final-project # timeout=10
+Fetching upstream changes from https://github.com/anpolyakov/final-project
+ > git --version # timeout=10
+ > git --version # 'git version 2.25.1'
+ > git fetch --tags --force --progress -- https://github.com/anpolyakov/final-project +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/master^{commit} # timeout=10
+Checking out Revision 92457ca3b7cdea7233fb677d76029d9ae580219c (refs/remotes/origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 92457ca3b7cdea7233fb677d76029d9ae580219c # timeout=10
+ > git branch -a -v --no-abbrev # timeout=10
+ > git branch -D master # timeout=10
+ > git checkout -b master 92457ca3b7cdea7233fb677d76029d9ae580219c # timeout=10
+Commit message: "Updated files"
+ > git rev-list --no-walk 92457ca3b7cdea7233fb677d76029d9ae580219c # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Terraform init)
+[Pipeline] dir
+Running in /var/lib/jenkins/workspace/Final Project/terraform
+[Pipeline] {
+[Pipeline] sh
++ terraform init
+
+[0m[1mInitializing the backend...[0m
+[0m[1mInitializing provider plugins...[0m
+- Reusing previous version of hashicorp/local from the dependency lock file
+- Reusing previous version of hashicorp/aws from the dependency lock file
+- Using previously-installed hashicorp/local v2.1.0
+- Using previously-installed hashicorp/aws v3.32.0
+
+[33m
+[1m[33mWarning: [0m[0m[1mInterpolation-only expressions are deprecated[0m
+
+[0m  on instances.tf line 70, in resource "aws_instance" "maven":
+  70:   key_name = [4m"${var.aws_key_name}"[0m
+[0m
+Terraform 0.11 and earlier required all non-constant expressions to be
+provided via interpolation syntax, but this pattern is now deprecated. To
+silence this warning, remove the "${ sequence from the start and the }"
+sequence from the end of this expression, leaving just the inner expression.
+
+Template interpolation syntax is still used to construct strings from
+expressions when the template includes multiple interpolation sequences or a
+mixture of literal strings and interpolations. This deprecation applies only
+to templates that consist entirely of a single interpolation sequence.
+
+(and 3 more similar warnings elsewhere)
+[0m[0m
+[0m[1m[32mTerraform has been successfully initialized![0m[32m[0m
+[0m[32m
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.[0m
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Terraform plan and apply)
+[Pipeline] dir
+Running in /var/lib/jenkins/workspace/Final Project/terraform
+[Pipeline] {
+[Pipeline] sh
++ terraform plan -input=false -out tfplan
+[0m[1maws_security_group.allow_ssh_tomcat: Refreshing state... [id=sg-088ddd6931c593093][0m
+[0m[1maws_security_group.allow_ssh: Refreshing state... [id=sg-017b09546c93d625c][0m
+[0m[1maws_instance.tomcat: Refreshing state... [id=i-0220182e50b4b54b1][0m
+[0m[1maws_instance.maven: Refreshing state... [id=i-0716ddad86dc41a65][0m
+[0m[1mlocal_file.AnsibleInventory: Refreshing state... [id=b9d27d643fb061e4569f4aa371912fd584d3b8b3][0m
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  [32m+[0m create
+[31m-[0m/[32m+[0m destroy and then create replacement
+[0m
+Terraform will perform the following actions:
+
+[1m  # aws_instance.maven[0m will be created[0m[0m
+[0m  [32m+[0m[0m resource "aws_instance" "maven" {
+      [32m+[0m [0m[1m[0mami[0m[0m                          = "ami-0767046d1677be5a0"
+      [32m+[0m [0m[1m[0marn[0m[0m                          = (known after apply)
+      [32m+[0m [0m[1m[0massociate_public_ip_address[0m[0m  = (known after apply)
+      [32m+[0m [0m[1m[0mavailability_zone[0m[0m            = (known after apply)
+      [32m+[0m [0m[1m[0mcpu_core_count[0m[0m               = (known after apply)
+      [32m+[0m [0m[1m[0mcpu_threads_per_core[0m[0m         = (known after apply)
+      [32m+[0m [0m[1m[0mget_password_data[0m[0m            = false
+      [32m+[0m [0m[1m[0mhost_id[0m[0m                      = (known after apply)
+      [32m+[0m [0m[1m[0mid[0m[0m                           = (known after apply)
+      [32m+[0m [0m[1m[0minstance_state[0m[0m               = (known after apply)
+      [32m+[0m [0m[1m[0minstance_type[0m[0m                = "t2.micro"
+      [32m+[0m [0m[1m[0mipv6_address_count[0m[0m           = (known after apply)
+      [32m+[0m [0m[1m[0mipv6_addresses[0m[0m               = (known after apply)
+      [32m+[0m [0m[1m[0mkey_name[0m[0m                     = "devops_aws"
+      [32m+[0m [0m[1m[0moutpost_arn[0m[0m                  = (known after apply)
+      [32m+[0m [0m[1m[0mpassword_data[0m[0m                = (known after apply)
+      [32m+[0m [0m[1m[0mplacement_group[0m[0m              = (known after apply)
+      [32m+[0m [0m[1m[0mprimary_network_interface_id[0m[0m = (known after apply)
+      [32m+[0m [0m[1m[0mprivate_dns[0m[0m                  = (known after apply)
+      [32m+[0m [0m[1m[0mprivate_ip[0m[0m                   = (known after apply)
+      [32m+[0m [0m[1m[0mpublic_dns[0m[0m                   = (known after apply)
+      [32m+[0m [0m[1m[0mpublic_ip[0m[0m                    = (known after apply)
+      [32m+[0m [0m[1m[0msecondary_private_ips[0m[0m        = (known after apply)
+      [32m+[0m [0m[1m[0msecurity_groups[0m[0m              = [
+          [32m+[0m [0m"allow-ssh",
+        ]
+      [32m+[0m [0m[1m[0msource_dest_check[0m[0m            = true
+      [32m+[0m [0m[1m[0msubnet_id[0m[0m                    = (known after apply)
+      [32m+[0m [0m[1m[0mtags[0m[0m                         = {
+          [32m+[0m [0m"Name" = "Maven"
+        }
+      [32m+[0m [0m[1m[0mtenancy[0m[0m                      = (known after apply)
+      [32m+[0m [0m[1m[0mvpc_security_group_ids[0m[0m       = (known after apply)
+
+      [32m+[0m [0mebs_block_device {
+          [32m+[0m [0m[1m[0mdelete_on_termination[0m[0m = (known after apply)
+          [32m+[0m [0m[1m[0mdevice_name[0m[0m           = (known after apply)
+          [32m+[0m [0m[1m[0mencrypted[0m[0m             = (known after apply)
+          [32m+[0m [0m[1m[0miops[0m[0m                  = (known after apply)
+          [32m+[0m [0m[1m[0mkms_key_id[0m[0m            = (known after apply)
+          [32m+[0m [0m[1m[0msnapshot_id[0m[0m           = (known after apply)
+          [32m+[0m [0m[1m[0mtags[0m[0m                  = (known after apply)
+          [32m+[0m [0m[1m[0mthroughput[0m[0m            = (known after apply)
+          [32m+[0m [0m[1m[0mvolume_id[0m[0m             = (known after apply)
+          [32m+[0m [0m[1m[0mvolume_size[0m[0m           = (known after apply)
+          [32m+[0m [0m[1m[0mvolume_type[0m[0m           = (known after apply)
+        }
+
+      [32m+[0m [0menclave_options {
+          [32m+[0m [0m[1m[0menabled[0m[0m = (known after apply)
+        }
+
+      [32m+[0m [0mephemeral_block_device {
+          [32m+[0m [0m[1m[0mdevice_name[0m[0m  = (known after apply)
+          [32m+[0m [0m[1m[0mno_device[0m[0m    = (known after apply)
+          [32m+[0m [0m[1m[0mvirtual_name[0m[0m = (known after apply)
+        }
+
+      [32m+[0m [0mmetadata_options {
+          [32m+[0m [0m[1m[0mhttp_endpoint[0m[0m               = (known after apply)
+          [32m+[0m [0m[1m[0mhttp_put_response_hop_limit[0m[0m = (known after apply)
+          [32m+[0m [0m[1m[0mhttp_tokens[0m[0m                 = (known after apply)
+        }
+
+      [32m+[0m [0mnetwork_interface {
+          [32m+[0m [0m[1m[0mdelete_on_termination[0m[0m = (known after apply)
+          [32m+[0m [0m[1m[0mdevice_index[0m[0m          = (known after apply)
+          [32m+[0m [0m[1m[0mnetwork_interface_id[0m[0m  = (known after apply)
+        }
+
+      [32m+[0m [0mroot_block_device {
+          [32m+[0m [0m[1m[0mdelete_on_termination[0m[0m = (known after apply)
+          [32m+[0m [0m[1m[0mdevice_name[0m[0m           = (known after apply)
+          [32m+[0m [0m[1m[0mencrypted[0m[0m             = (known after apply)
+          [32m+[0m [0m[1m[0miops[0m[0m                  = (known after apply)
+          [32m+[0m [0m[1m[0mkms_key_id[0m[0m            = (known after apply)
+          [32m+[0m [0m[1m[0mtags[0m[0m                  = (known after apply)
+          [32m+[0m [0m[1m[0mthroughput[0m[0m            = (known after apply)
+          [32m+[0m [0m[1m[0mvolume_id[0m[0m             = (known after apply)
+          [32m+[0m [0m[1m[0mvolume_size[0m[0m           = (known after apply)
+          [32m+[0m [0m[1m[0mvolume_type[0m[0m           = (known after apply)
+        }
+    }
+
+[1m  # aws_instance.tomcat[0m will be created[0m[0m
+[0m  [32m+[0m[0m resource "aws_instance" "tomcat" {
+      [32m+[0m [0m[1m[0mami[0m[0m                          = "ami-0767046d1677be5a0"
+      [32m+[0m [0m[1m[0marn[0m[0m                          = (known after apply)
+      [32m+[0m [0m[1m[0massociate_public_ip_address[0m[0m  = (known after apply)
+      [32m+[0m [0m[1m[0mavailability_zone[0m[0m            = (known after apply)
+      [32m+[0m [0m[1m[0mcpu_core_count[0m[0m               = (known after apply)
+      [32m+[0m [0m[1m[0mcpu_threads_per_core[0m[0m         = (known after apply)
+      [32m+[0m [0m[1m[0mget_password_data[0m[0m            = false
+      [32m+[0m [0m[1m[0mhost_id[0m[0m                      = (known after apply)
+      [32m+[0m [0m[1m[0mid[0m[0m                           = (known after apply)
+      [32m+[0m [0m[1m[0minstance_state[0m[0m               = (known after apply)
+      [32m+[0m [0m[1m[0minstance_type[0m[0m                = "t2.micro"
+      [32m+[0m [0m[1m[0mipv6_address_count[0m[0m           = (known after apply)
+      [32m+[0m [0m[1m[0mipv6_addresses[0m[0m               = (known after apply)
+      [32m+[0m [0m[1m[0mkey_name[0m[0m                     = "devops_aws"
+      [32m+[0m [0m[1m[0moutpost_arn[0m[0m                  = (known after apply)
+      [32m+[0m [0m[1m[0mpassword_data[0m[0m                = (known after apply)
+      [32m+[0m [0m[1m[0mplacement_group[0m[0m              = (known after apply)
+      [32m+[0m [0m[1m[0mprimary_network_interface_id[0m[0m = (known after apply)
+      [32m+[0m [0m[1m[0mprivate_dns[0m[0m                  = (known after apply)
+      [32m+[0m [0m[1m[0mprivate_ip[0m[0m                   = (known after apply)
+      [32m+[0m [0m[1m[0mpublic_dns[0m[0m                   = (known after apply)
+      [32m+[0m [0m[1m[0mpublic_ip[0m[0m                    = (known after apply)
+      [32m+[0m [0m[1m[0msecondary_private_ips[0m[0m        = (known after apply)
+      [32m+[0m [0m[1m[0msecurity_groups[0m[0m              = [
+          [32m+[0m [0m"allow-ssh-tomcat",
+        ]
+      [32m+[0m [0m[1m[0msource_dest_check[0m[0m            = true
+      [32m+[0m [0m[1m[0msubnet_id[0m[0m                    = (known after apply)
+      [32m+[0m [0m[1m[0mtags[0m[0m                         = {
+          [32m+[0m [0m"Name" = "Tomcat"
+        }
+      [32m+[0m [0m[1m[0mtenancy[0m[0m                      = (known after apply)
+      [32m+[0m [0m[1m[0mvpc_security_group_ids[0m[0m       = (known after apply)
+
+      [32m+[0m [0mebs_block_device {
+          [32m+[0m [0m[1m[0mdelete_on_termination[0m[0m = (known after apply)
+          [32m+[0m [0m[1m[0mdevice_name[0m[0m           = (known after apply)
+          [32m+[0m [0m[1m[0mencrypted[0m[0m             = (known after apply)
+          [32m+[0m [0m[1m[0miops[0m[0m                  = (known after apply)
+          [32m+[0m [0m[1m[0mkms_key_id[0m[0m            = (known after apply)
+          [32m+[0m [0m[1m[0msnapshot_id[0m[0m           = (known after apply)
+          [32m+[0m [0m[1m[0mtags[0m[0m                  = (known after apply)
+          [32m+[0m [0m[1m[0mthroughput[0m[0m            = (known after apply)
+          [32m+[0m [0m[1m[0mvolume_id[0m[0m             = (known after apply)
+          [32m+[0m [0m[1m[0mvolume_size[0m[0m           = (known after apply)
+          [32m+[0m [0m[1m[0mvolume_type[0m[0m           = (known after apply)
+        }
+
+      [32m+[0m [0menclave_options {
+          [32m+[0m [0m[1m[0menabled[0m[0m = (known after apply)
+        }
+
+      [32m+[0m [0mephemeral_block_device {
+          [32m+[0m [0m[1m[0mdevice_name[0m[0m  = (known after apply)
+          [32m+[0m [0m[1m[0mno_device[0m[0m    = (known after apply)
+          [32m+[0m [0m[1m[0mvirtual_name[0m[0m = (known after apply)
+        }
+
+      [32m+[0m [0mmetadata_options {
+          [32m+[0m [0m[1m[0mhttp_endpoint[0m[0m               = (known after apply)
+          [32m+[0m [0m[1m[0mhttp_put_response_hop_limit[0m[0m = (known after apply)
+          [32m+[0m [0m[1m[0mhttp_tokens[0m[0m                 = (known after apply)
+        }
+
+      [32m+[0m [0mnetwork_interface {
+          [32m+[0m [0m[1m[0mdelete_on_termination[0m[0m = (known after apply)
+          [32m+[0m [0m[1m[0mdevice_index[0m[0m          = (known after apply)
+          [32m+[0m [0m[1m[0mnetwork_interface_id[0m[0m  = (known after apply)
+        }
+
+      [32m+[0m [0mroot_block_device {
+          [32m+[0m [0m[1m[0mdelete_on_termination[0m[0m = (known after apply)
+          [32m+[0m [0m[1m[0mdevice_name[0m[0m           = (known after apply)
+          [32m+[0m [0m[1m[0mencrypted[0m[0m             = (known after apply)
+          [32m+[0m [0m[1m[0miops[0m[0m                  = (known after apply)
+          [32m+[0m [0m[1m[0mkms_key_id[0m[0m            = (known after apply)
+          [32m+[0m [0m[1m[0mtags[0m[0m                  = (known after apply)
+          [32m+[0m [0m[1m[0mthroughput[0m[0m            = (known after apply)
+          [32m+[0m [0m[1m[0mvolume_id[0m[0m             = (known after apply)
+          [32m+[0m [0m[1m[0mvolume_size[0m[0m           = (known after apply)
+          [32m+[0m [0m[1m[0mvolume_type[0m[0m           = (known after apply)
+        }
+    }
+
+[1m  # local_file.AnsibleInventory[0m must be [1m[31mreplaced[0m[0m
+[0m[31m-[0m/[32m+[0m[0m resource "local_file" "AnsibleInventory" {
+      [33m~[0m [0m[1m[0mcontent[0m[0m              = <<-EOT
+            [all:vars]
+            ansible_user=ubuntu
+            ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+            
+            [maven]
+            ec2-3-120-37-63.eu-central-1.compute.amazonaws.com ansible_host=3.120.37.63 
+            
+            [tomcat]
+            ec2-54-93-228-240.eu-central-1.compute.amazonaws.com ansible_host=54.93.228.240
+        EOT [33m->[0m [0m(known after apply) [31m# forces replacement[0m[0m
+      [33m~[0m [0m[1m[0mid[0m[0m                   = "b9d27d643fb061e4569f4aa371912fd584d3b8b3" [33m->[0m [0m(known after apply)
+        [90m# (3 unchanged attributes hidden)[0m[0m
+    }
+
+[0m[1mPlan:[0m 3 to add, 0 to change, 1 to destroy.[0m
+[33m
+[1m[33mWarning: [0m[0m[1mInterpolation-only expressions are deprecated[0m
+
+[0m  on instances.tf line 70, in resource "aws_instance" "maven":
+  70:   key_name = [4m"${var.aws_key_name}"[0m
+[0m
+Terraform 0.11 and earlier required all non-constant expressions to be
+provided via interpolation syntax, but this pattern is now deprecated. To
+silence this warning, remove the "${ sequence from the start and the }"
+sequence from the end of this expression, leaving just the inner expression.
+
+Template interpolation syntax is still used to construct strings from
+expressions when the template includes multiple interpolation sequences or a
+mixture of literal strings and interpolations. This deprecation applies only
+to templates that consist entirely of a single interpolation sequence.
+
+(and 3 more similar warnings elsewhere)
+[0m[0m
+
+------------------------------------------------------------------------
+
+This plan was saved to: tfplan
+
+To perform exactly these actions, run the following command to apply:
+    terraform apply "tfplan"
+
+[Pipeline] sh
++ terraform show -no-color tfplan
+[Pipeline] sh
++ terraform apply --auto-approve
+[0m[1maws_security_group.allow_ssh: Refreshing state... [id=sg-017b09546c93d625c][0m
+[0m[1maws_security_group.allow_ssh_tomcat: Refreshing state... [id=sg-088ddd6931c593093][0m
+[0m[1maws_instance.maven: Refreshing state... [id=i-0716ddad86dc41a65][0m
+[0m[1maws_instance.tomcat: Refreshing state... [id=i-0220182e50b4b54b1][0m
+[0m[1mlocal_file.AnsibleInventory: Refreshing state... [id=b9d27d643fb061e4569f4aa371912fd584d3b8b3][0m
+[0m[1mlocal_file.AnsibleInventory: Destroying... [id=b9d27d643fb061e4569f4aa371912fd584d3b8b3][0m[0m
+[0m[1mlocal_file.AnsibleInventory: Destruction complete after 0s[0m[0m
+[0m[1maws_instance.tomcat: Creating...[0m[0m
+[0m[1maws_instance.maven: Creating...[0m[0m
+[0m[1maws_instance.tomcat: Still creating... [10s elapsed][0m[0m
+[0m[1maws_instance.maven: Still creating... [10s elapsed][0m[0m
+[0m[1maws_instance.tomcat: Still creating... [20s elapsed][0m[0m
+[0m[1maws_instance.maven: Still creating... [20s elapsed][0m[0m
+[0m[1maws_instance.maven: Creation complete after 21s [id=i-031da130c6edcbef6][0m[0m
+[0m[1maws_instance.tomcat: Still creating... [30s elapsed][0m[0m
+[0m[1maws_instance.tomcat: Creation complete after 31s [id=i-087821b0732a36e60][0m[0m
+[0m[1mlocal_file.AnsibleInventory: Creating...[0m[0m
+[0m[1mlocal_file.AnsibleInventory: Creation complete after 0s [id=a0650fe057759a44565ce6eb2f6e9118ad08d9a0][0m[0m
+[33m
+[1m[33mWarning: [0m[0m[1mInterpolation-only expressions are deprecated[0m
+
+[0m  on instances.tf line 70, in resource "aws_instance" "maven":
+  70:   key_name = [4m"${var.aws_key_name}"[0m
+[0m
+Terraform 0.11 and earlier required all non-constant expressions to be
+provided via interpolation syntax, but this pattern is now deprecated. To
+silence this warning, remove the "${ sequence from the start and the }"
+sequence from the end of this expression, leaving just the inner expression.
+
+Template interpolation syntax is still used to construct strings from
+expressions when the template includes multiple interpolation sequences or a
+mixture of literal strings and interpolations. This deprecation applies only
+to templates that consist entirely of a single interpolation sequence.
+
+(and 3 more similar warnings elsewhere)
+[0m[0m
+[0m[1m[32m
+Apply complete! Resources: 3 added, 0 changed, 1 destroyed.[0m
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Ansible provisoning and Deploy Java App)
+[Pipeline] sh
++ sleep 30s
+[Pipeline] ansiblePlaybook
+[Final Project] $ docker exec --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** --env ******** 22d9567ed8413667044904aca4004fcc7c947b175cfb4174dc32c4f7318e07f2 ansible-playbook ansible/provisoning.yml -i terraform/inventory --private-key "/var/lib/jenkins/workspace/Final Project/ssh5803864958133910832.key" -u ubuntu -e @aws_variables.yml
+PLAY [Setup Maven Environment] *************************************************
+
+TASK [Ensure docker is present] ************************************************
+changed: [ec2-52-57-228-174.eu-central-1.compute.amazonaws.com]
+
+TASK [Ensure docker is started] ************************************************
+changed: [ec2-52-57-228-174.eu-central-1.compute.amazonaws.com]
+
+TASK [Ensure pip is present] ***************************************************
+changed: [ec2-52-57-228-174.eu-central-1.compute.amazonaws.com]
+
+TASK [Ensure pip packages is present] ******************************************
+changed: [ec2-52-57-228-174.eu-central-1.compute.amazonaws.com]
+
+TASK [Git Clone] ***************************************************************
+changed: [ec2-52-57-228-174.eu-central-1.compute.amazonaws.com]
+
+TASK [Create docker image] *****************************************************
+[WARNING]: Please specify build.path instead of path. The path option has been
+renamed and will be removed in Ansible 2.12.
+[WARNING]: The value of the "source" option was determined to be "build".
+Please set the "source" option explicitly. Autodetection will be removed in
+Ansible 2.12.
+[DEPRECATION WARNING]: Param 'path' is deprecated. See the module docs for more
+ information. This feature will be removed in version 2.12. Deprecation 
+warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+changed: [ec2-52-57-228-174.eu-central-1.compute.amazonaws.com]
+
+TASK [Create a maven container] ************************************************
+changed: [ec2-52-57-228-174.eu-central-1.compute.amazonaws.com]
+
+TASK [Remove old releases Java App] ********************************************
+ok: [ec2-52-57-228-174.eu-central-1.compute.amazonaws.com]
+
+TASK [Clone Java App] **********************************************************
+changed: [ec2-52-57-228-174.eu-central-1.compute.amazonaws.com]
+
+TASK [Build Java App] **********************************************************
+changed: [ec2-52-57-228-174.eu-central-1.compute.amazonaws.com]
+
+TASK [Create an empty bucket] **************************************************
+ok: [ec2-52-57-228-174.eu-central-1.compute.amazonaws.com]
+
+TASK [Copy artefact to bucket] *************************************************
+changed: [ec2-52-57-228-174.eu-central-1.compute.amazonaws.com]
+
+PLAY [Setup Tomcat Environment] ************************************************
+
+TASK [Ensure docker is present] ************************************************
+changed: [ec2-3-124-218-211.eu-central-1.compute.amazonaws.com]
+
+TASK [Ensure docker is started] ************************************************
+changed: [ec2-3-124-218-211.eu-central-1.compute.amazonaws.com]
+
+TASK [Ensure pip is present] ***************************************************
+changed: [ec2-3-124-218-211.eu-central-1.compute.amazonaws.com]
+
+TASK [Ensure pip packages is present] ******************************************
+changed: [ec2-3-124-218-211.eu-central-1.compute.amazonaws.com]
+
+TASK [Git Clone] ***************************************************************
+changed: [ec2-3-124-218-211.eu-central-1.compute.amazonaws.com]
+
+TASK [Create docker image] *****************************************************
+changed: [ec2-3-124-218-211.eu-central-1.compute.amazonaws.com]
+
+TASK [Create a tomcat container] ***********************************************
+changed: [ec2-3-124-218-211.eu-central-1.compute.amazonaws.com]
+TASK [Download artefact to tomcat webroot] *************************************
+changed: [ec2-3-124-218-211.eu-central-1.compute.amazonaws.com]
+
+PLAY RECAP *********************************************************************
+ec2-3-124-218-211.eu-central-1.compute.amazonaws.com : ok=8    changed=8    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+ec2-52-57-228-174.eu-central-1.compute.amazonaws.com : ok=12   changed=10   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+$ docker stop --time=1 22d9567ed8413667044904aca4004fcc7c947b175cfb4174dc32c4f7318e07f2
+$ docker rm -f 22d9567ed8413667044904aca4004fcc7c947b175cfb4174dc32c4f7318e07f2
+[Pipeline] // withDockerContainer
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
