@@ -7,7 +7,7 @@ Below you can see sample screenshot from Jenkins pipeline results.
 
 ### What was the task?
 
-Write Jenkins pipeline, which launch instances in AWS, build Java application and deploy application on stage. Nessesary to use Terraform code and Ansible. Application have to be published in container.  
+Write Jenkins pipeline, which launch instances in AWS, build Java application and deploy application on stage. Necessary to use Terraform code and Ansible. Application have to be published in container.  
 
 ### Credentials
 
